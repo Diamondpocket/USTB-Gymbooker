@@ -49,6 +49,15 @@ test("loadConfig selects one instance from a multi-instance config", () => {
           loginUrl: "http://example.com/weixinordernewv7.aspx?wxkey=b&lxbh=Y",
           bookingPageUrl: "http://example.com/weixinordernewv7.aspx?wxkey=b&lxbh=Y"
         }
+      },
+      {
+        id: "card_c",
+        name: "card-c",
+        port: 3212,
+        config: {
+          loginUrl: "http://example.com/weixinordernewv7.aspx?wxkey=c&lxbh=Y",
+          bookingPageUrl: "http://example.com/weixinordernewv7.aspx?wxkey=c&lxbh=Y"
+        }
       }
     ]
   }, null, 2));
@@ -63,4 +72,13 @@ test("loadConfig selects one instance from a multi-instance config", () => {
   assert.equal(config.server.port, 3211);
   assert.equal(config.manualOverride.allowManualOverride, true);
   assert.equal(new URL(config.bookingPageUrl).searchParams.get("wxkey"), "b");
+
+  const thirdConfig = loadConfig({
+    configPath,
+    instanceName: "card_c"
+  });
+
+  assert.equal(thirdConfig.instance.name, "card-c");
+  assert.equal(thirdConfig.server.port, 3212);
+  assert.equal(new URL(thirdConfig.bookingPageUrl).searchParams.get("wxkey"), "c");
 });

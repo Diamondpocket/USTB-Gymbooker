@@ -148,6 +148,20 @@
         "bookingPageUrl": "https://your-gym.example/weixinordernewv7.aspx?wxkey=YOUR_WXKEY_B&lxbh=Y",
         "storageStatePath": ".auth/card-b-storage-state.json"
       }
+    },
+    {
+      "id": "card_c",
+      "name": "card-c",
+      "port": 3212,
+      "mode": "auto",
+      "account": {
+        "label": "card-c"
+      },
+      "config": {
+        "loginUrl": "https://your-gym.example/weixinordernewv7.aspx?wxkey=YOUR_WXKEY_C&lxbh=Y",
+        "bookingPageUrl": "https://your-gym.example/weixinordernewv7.aspx?wxkey=YOUR_WXKEY_C&lxbh=Y",
+        "storageStatePath": ".auth/card-c-storage-state.json"
+      }
     }
   ]
 }

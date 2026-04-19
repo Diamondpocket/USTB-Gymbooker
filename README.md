@@ -1,6 +1,6 @@
 # School Gym Booker
 
-Current stable version: `2.1.7`
+Current stable version: `2.2.0`
 
 This is a date-time-court driven booking script for mobile-first school gym pages.
 
@@ -108,11 +108,12 @@ Example shared config:
 Copy-Item config/multi-instance.example.json config/multi-instance.json
 ```
 
-Then edit the two `YOUR_WXKEY_*` values and start separate instances:
+Then edit the `YOUR_WXKEY_*` values and start separate instances:
 
 ```powershell
 node src/ui-server.js --config config/multi-instance.json --instance card_a --port 3210
 node src/ui-server.js --config config/multi-instance.json --instance card_b --port 3211
+node src/ui-server.js --config config/multi-instance.json --instance card_c --port 3212
 ```
 
 Direct CLI also supports the same flags:
@@ -178,7 +179,10 @@ Multi-instance launcher examples:
 ```powershell
 dist\GymBooker.exe --config config\multi-instance.json --instance card_a --port 3210
 dist\GymBooker.exe --config config\multi-instance.json --instance card_b --port 3211
+dist\GymBooker.exe --config config\multi-instance.json --instance card_c --port 3212
 ```
+
+The generated convenience launcher names `GymBooker-card-a.exe`, `GymBooker-card-b.exe`, and `GymBooker-card-c.exe` automatically map to ports `3210`, `3211`, and `3212`.
 
 Notes:
 

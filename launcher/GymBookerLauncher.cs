@@ -86,6 +86,14 @@ internal static class GymBookerLauncher
     private static void ApplyDefaultsFromExeName(LauncherOptions options)
     {
         string exeName = Path.GetFileNameWithoutExtension(Application.ExecutablePath).ToLowerInvariant();
+        if (exeName.Contains("card-c") || exeName.Contains("card_c") || exeName.Contains("3212"))
+        {
+            options.ConfigPath = "config\\multi-instance.json";
+            options.InstanceName = "card_c";
+            options.Port = 3212;
+            return;
+        }
+
         if (exeName.Contains("card-b") || exeName.Contains("card_b") || exeName.Contains("3211"))
         {
             options.ConfigPath = "config\\multi-instance.json";
