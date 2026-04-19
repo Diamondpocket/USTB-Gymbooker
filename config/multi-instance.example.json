@@ -1,0 +1,153 @@
+{
+  "global_config": {
+    "default_instance": "card_a",
+    "base_config": {
+      "timezone": "Asia/Shanghai",
+      "openPageTimeoutMs": 15000,
+      "pollIntervalMs": 500,
+      "optimization": {
+        "fastTargetSwitch": true,
+        "maxPlansPerScan": 16,
+        "maxSubmitsPerScan": 2,
+        "prefetchWhileSubmitting": true,
+        "prefetchScanIntervalMs": 800,
+        "availabilityTimeoutMs": 4500,
+        "submitTimeoutMs": 120000,
+        "networkRetryCount": 0,
+        "networkRetryDelayMs": 80,
+        "fastRescanDelayMs": 0,
+        "failedTargetCooldownMs": 5000
+      },
+      "paytype": "M",
+      "releaseAt": "2026-04-09 08:59:00",
+      "mobile": {
+        "enabled": true,
+        "viewport": {
+          "width": 375,
+          "height": 667
+        },
+        "locale": "zh-CN"
+      },
+      "bookingWindow": {
+        "date": "2026-04-16",
+        "dateLabel": "4/16",
+        "startTime": "08:00",
+        "endTime": "19:00",
+        "segments": [
+          {
+            "startTime": "08:00",
+            "endTime": "09:00"
+          },
+          {
+            "startTime": "18:00",
+            "endTime": "19:00"
+          }
+        ],
+        "maxAttempts": 999999
+      },
+      "preferences": {
+        "courtNumbers": [12, 13, 14, 15, 16, 17, 18, 19, 20],
+        "courtKeywords": []
+      },
+      "rules": {
+        "blockedPrices": [60, 120],
+        "requiredCourtCount": 2,
+        "allowSingleSlot": false
+      },
+      "campusAvailabilityRules": {
+        "enabled": true,
+        "weekdays": {
+          "monday": [
+            { "time": "10:00-12:00", "courts": [] },
+            { "time": "13:00-15:00", "courts": [11, 12, 13, 14, 15, 16, 17, 18, 19, 20] }
+          ],
+          "tuesday": [
+            { "time": "08:00-10:00", "courts": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20] },
+            { "time": "13:00-18:00", "courts": [3, 4, 5, 6] }
+          ],
+          "wednesday": [
+            { "time": "08:00-10:00", "courts": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20] },
+            { "time": "10:00-12:00", "courts": [11, 12, 13, 14, 15, 16, 17, 18, 19, 20] },
+            { "time": "13:30-15:00", "courts": [] },
+            { "time": "15:00-17:00", "courts": [11, 12, 13, 14, 15, 16, 17, 18, 19, 20] },
+            { "time": "17:00-18:00", "courts": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20] }
+          ],
+          "thursday": [
+            { "time": "08:00-10:00", "courts": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20] },
+            { "time": "13:30-15:00", "courts": [16, 17, 18, 19, 20] },
+            { "time": "15:00-17:00", "courts": [11, 12, 13, 14, 15, 16, 17, 18, 19, 20] },
+            { "time": "17:00-18:00", "courts": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20] }
+          ],
+          "friday": [
+            { "time": "08:00-22:00", "courts": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20] }
+          ]
+        }
+      },
+      "scan": {
+        "loops": 10,
+        "intervalMs": 500
+      },
+      "grid": {
+        "maxDistancePx": 55,
+        "bookableColorHints": ["rgb(101, 214, 62)", "rgba(101, 214, 62"]
+      },
+      "selectors": {
+        "postLoginReady": "body",
+        "listLoading": ".loading, .el-loading-mask, .van-loading, .weui-loading",
+        "dateTab": ".date-item, .swiper-slide, [class*='date']",
+        "courtHeader": ".court-header-item, .site-name, .court-name, td[cdmc]",
+        "timeLabel": ".time-label, .time-item, .left-time span",
+        "gridCell": "td[cdbh][timespan][cdmc]",
+        "submitButton": ".submits-con button, .submits-con a, section.submits-con button, section.submits-con a",
+        "confirmButton": ".common-dialogs button, .weui-dialog__btn, .dialog button, .modal button",
+        "successToast": ".weui-toast, .van-toast, .el-message, .toast"
+      }
+    }
+  },
+  "coordination": {
+    "enabled": true,
+    "statePath": ".coordination/resource-registry.json",
+    "lockPath": ".coordination/resource-registry.lock",
+    "lockTtlMs": 90000,
+    "bookedTtlMs": 21600000,
+    "lockWaitMs": 1200,
+    "lockRetryMs": 30,
+    "fileLockStaleMs": 5000
+  },
+  "manual_override": {
+    "allow_manual_override": false
+  },
+  "logging": {
+    "format": "[local-time][instance] message"
+  },
+  "instances": [
+    {
+      "id": "card_a",
+      "name": "card-a",
+      "port": 3210,
+      "mode": "auto",
+      "account": {
+        "label": "card-a"
+      },
+      "config": {
+        "loginUrl": "https://your-gym.example/weixinordernewv7.aspx?wxkey=YOUR_WXKEY_A&lxbh=Y",
+        "bookingPageUrl": "https://your-gym.example/weixinordernewv7.aspx?wxkey=YOUR_WXKEY_A&lxbh=Y",
+        "storageStatePath": ".auth/card-a-storage-state.json"
+      }
+    },
+    {
+      "id": "card_b",
+      "name": "card-b",
+      "port": 3211,
+      "mode": "auto",
+      "account": {
+        "label": "card-b"
+      },
+      "config": {
+        "loginUrl": "https://your-gym.example/weixinordernewv7.aspx?wxkey=YOUR_WXKEY_B&lxbh=Y",
+        "bookingPageUrl": "https://your-gym.example/weixinordernewv7.aspx?wxkey=YOUR_WXKEY_B&lxbh=Y",
+        "storageStatePath": ".auth/card-b-storage-state.json"
+      }
+    }
+  ]
+}

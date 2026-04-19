@@ -1,0 +1,26 @@
+node_modules/
+
+# Local credentials and session state
+.auth/
+config/local.json
+config/multi-instance.json
+*.local.json
+
+# Runtime state and logs
+logs/
+*.log
+.coordination/
+
+# Generated build outputs
+dist/
+GymBooker.exe
+*.exe
+
+# Local reverse-engineering notes / captured pages
+research/
+
+# Tooling noise
+.env
+.env.*
+npm-debug.log*
+coverage/

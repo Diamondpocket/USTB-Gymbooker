@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>抢场控制台</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <p class="eyebrow">Gym Booker Console</p>
+        <h1>抢场控制台</h1>
+        <p class="version-badge">Version <span id="app-version">loading...</span></p>
+        <p class="version-badge">Instance <span id="instance-name">default</span></p>
+      </section>
+
+      <section class="grid">
+        <form id="config-form" class="panel panel-form">
+          <div class="panel-head">
+            <h2>核心设置</h2>
+            <button type="button" id="save-config" class="ghost">保存配置</button>
+          </div>
+
+          <label>
+            <span>订场日期</span>
+            <input type="date" id="date" required />
+          </label>
+
+          <label>
+            <span>订场入口链接</span>
+            <textarea id="booking-page-url" class="url-input" placeholder="粘贴 weixinordernewv7.aspx 的完整链接"></textarea>
+          </label>
+
+          <div class="row two">
+            <label>
+              <span>第一时段</span>
+              <select id="start-time" required></select>
+            </label>
+            <label>
+              <span>第二时段</span>
+              <select id="start-time-2" required></select>
+            </label>
+          </div>
+          <input type="hidden" id="end-time" />
+          <input type="hidden" id="end-time-2" />
+
+          <div class="picker-block">
+            <div class="picker-head">
+              <span>场地偏好顺序</span>
+              <button type="button" id="prefer-back-row" class="ghost mini-button">后排优先</button>
+            </div>
+            <div id="courts" class="option-grid court-grid"></div>
+          </div>
+
+          <div class="picker-block">
+            <span>禁抢价格</span>
+            <div id="blocked-prices" class="option-grid price-grid"></div>
+          </div>
+
+          <div class="row two">
+            <label>
+              <span>开抢时间</span>
+              <input type="datetime-local" id="release-at" />
+            </label>
+            <label class="advanced-field">
+              <span>最大尝试次数</span>
+              <input type="number" id="max-attempts" min="1" step="1" />
+            </label>
+          </div>
+
+          <div class="picker-block">
+            <label class="toggle-row">
+              <input type="checkbox" id="allow-single-slot" />
+              <span>允许只抢一片</span>
+            </label>
+          </div>
+
+          <div id="manual-override-warning" class="coordination-warning" hidden>
+            手动覆盖已开启：本实例可能覆盖共享资源锁，可能和另一个账号冲突。
+          </div>
+
+          <div class="row two">
+            <label>
+              <span>扫描轮数</span>
+              <input type="number" id="scan-loops" min="1" step="1" value="10" />
+            </label>
+            <label>
+              <span>扫描间隔(ms)</span>
+              <input type="number" id="scan-interval-ms" min="100" step="100" value="500" />
+            </label>
+          </div>
+
+          <label>
+            <span>命令预览</span>
+            <textarea id="command-preview" readonly></textarea>
+          </label>
+        </form>
+
+        <section class="panel panel-actions">
+          <div class="panel-head">
+            <h2>执行</h2>
+          </div>
+
+          <div class="action-stack">
+            <button type="button" data-mode="scan-api" class="primary">快速扫描余量</button>
+
+            <button type="button" data-mode="book-api" data-dry-run="true" class="secondary">模拟下单</button>
+
+            <button type="button" data-mode="book-api" class="danger">正式开抢</button>
+
+            <button type="button" id="cancel-run" class="ghost" disabled>取消运行</button>
+          </div>
+
+          <div class="legend">
+            <span class="chip blocked">禁抢价格</span>
+            <span class="chip normal">普通场</span>
+          </div>
+        </section>
+      </section>
+
+      <section class="panel panel-output">
+        <div class="panel-head">
+          <h2>输出</h2>
+          <button type="button" id="clear-output" class="ghost">清空</button>
+        </div>
+        <div id="success-banner" class="success-banner" hidden></div>
+        <pre id="output"></pre>
+      </section>
+
+      <section class="panel panel-map">
+        <div class="panel-head">
+          <h2>场地可视化</h2>
+          <div class="map-actions">
+            <span id="map-status" class="map-status">未刷新</span>
+            <button type="button" id="refresh-map" class="ghost">刷新场地</button>
+          </div>
+        </div>
+        <div class="map-legend">
+          <span class="chip map-open">有可订时段</span>
+          <span class="chip map-campus">校内关闭</span>
+          <span class="chip map-blocked">只有禁抢价格</span>
+          <span class="chip map-empty">当前无空位</span>
+        </div>
+        <div id="court-map" class="court-map"></div>
+      </section>
+    </main>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

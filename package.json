@@ -1,0 +1,19 @@
+{
+  "name": "school-gym-booker",
+  "version": "2.1.7",
+  "private": true,
+  "type": "module",
+  "description": "Config-driven Playwright helper for booking school sports venues.",
+  "scripts": {
+    "capture-session": "node src/index.js capture-session",
+    "book": "node src/index.js book",
+    "book-api": "node src/index.js book-api",
+    "scan-api": "node src/index.js scan-api",
+    "ui": "node src/ui-server.js",
+    "build-exe": "powershell -ExecutionPolicy Bypass -File scripts/build-launcher.ps1",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "playwright": "^1.54.2"
+  }
+}
