@@ -1,3 +1,5 @@
+import { parseBookingSuccess } from "./success-log.js";
+
 const ALL_COURTS = Array.from({ length: 20 }, (_, index) => index + 1);
 const DEFAULT_BACK_ROW_COURTS = [12, 13, 14, 15, 16, 17, 18, 19, 20];
 const PRICE_OPTIONS = [10, 15, 60, 120];
@@ -491,14 +493,13 @@ function scrollOutputToBottomIfNeeded(shouldStickToBottom) {
 }
 
 function updateSuccessBanner(text) {
-  const match = String(text).match(/BOOKING_SUCCESS orderId=([^\\s]+) slots=([^\\n]+)/);
-  if (!match) {
+  const success = parseBookingSuccess(text);
+  if (!success) {
     return;
   }
 
-  const [, orderId, slots] = match;
   els.successBanner.hidden = false;
-  els.successBanner.textContent = `抢场成功！订单号: ${orderId}，场地: ${slots.trim()}`;
+  els.successBanner.textContent = `抢场成功！订单号: ${success.orderId}，场地: ${success.slots}`;
 }
 
 function hideSuccessBanner() {

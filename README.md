@@ -1,6 +1,6 @@
 # School Gym Booker
 
-Current stable version: `2.2.1`
+Current stable version: `2.2.2`
 
 This is a date-time-court driven booking script for mobile-first school gym pages.
 

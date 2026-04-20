@@ -579,7 +579,7 @@ function buildPlansByTimeWindow(availability, runtime, blockedResourceIds) {
   const plans = [];
   const planBudget = runtime.maxPlansPerScan * 4;
 
-  const walk = (segmentIndex, selected, usedResourceIds) => {
+  const walk = (segmentIndex, selected, usedResourceIds, usedTimeRanges) => {
     if (selected.length >= runtime.targetSlotCount) {
       plans.push([...selected]);
       return;
@@ -590,13 +590,15 @@ function buildPlansByTimeWindow(availability, runtime, blockedResourceIds) {
     }
 
     for (const candidate of candidateGroups[segmentIndex]) {
-      if (usedResourceIds.has(candidate.resourceId)) {
+      if (usedResourceIds.has(candidate.resourceId) || usedTimeRanges.has(candidate.timeRange)) {
         continue;
       }
 
       selected.push(candidate);
       usedResourceIds.add(candidate.resourceId);
-      walk(segmentIndex + 1, selected, usedResourceIds);
+      usedTimeRanges.add(candidate.timeRange);
+      walk(segmentIndex + 1, selected, usedResourceIds, usedTimeRanges);
+      usedTimeRanges.delete(candidate.timeRange);
       usedResourceIds.delete(candidate.resourceId);
       selected.pop();
 
@@ -606,7 +608,7 @@ function buildPlansByTimeWindow(availability, runtime, blockedResourceIds) {
     }
   };
 
-  walk(0, [], new Set());
+  walk(0, [], new Set(), new Set());
 
   if (plans.length === 0) {
     for (const group of candidateGroups) {

@@ -172,6 +172,40 @@ test("selectBookingSlots can pick one slot from each configured time segment", (
   assert.ok(selected.every((slot) => [16, 17, 18].includes(slot.courtNo)));
 });
 
+test("buildBookingPlans rejects two courts in the same hour across duplicated segments", () => {
+  const runtime = __test__.createRuntime(makeConfig({
+    bookingWindow: {
+      date: "2026-04-16",
+      segments: [
+        { startTime: "8:00", endTime: "9:00" },
+        { startTime: "8:00", endTime: "9:00" }
+      ],
+      maxAttempts: 10
+    },
+    rules: {
+      blockedPrices: [60, 120],
+      requiredCourtCount: 2,
+      allowSingleSlot: false
+    }
+  }));
+
+  const availability = makeAvailability([
+    {
+      timemc: "8:00",
+      endtimemc: "9:00",
+      cdcount: "2",
+      cdbh1: "18",
+      c1: "i",
+      price1: "10",
+      cdbh2: "19",
+      c2: "i",
+      price2: "10"
+    }
+  ]);
+
+  assert.deepEqual(__test__.buildBookingPlans(availability, runtime), []);
+});
+
 test("buildBookingPlans creates fast-switch alternatives from one scan", () => {
   const runtime = __test__.createRuntime(makeConfig({
     bookingWindow: {
