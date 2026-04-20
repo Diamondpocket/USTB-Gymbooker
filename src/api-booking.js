@@ -5,7 +5,7 @@ const BOOKABLE_STATUS = "i";
 const TOTAL_COURTS = 20;
 const HOME_FUNCTION_ROUTE = "/HomefuntionV2json.aspx";
 const AVAILABILITY_ROUTE = "/GetForm.aspx?datatype=viewchangdi4weixinv&pagesize=0&pagenum=0";
-const DEFAULT_AVAILABILITY_TIMEOUT_MS = 4500;
+const DEFAULT_AVAILABILITY_TIMEOUT_MS = 20000;
 const DEFAULT_SUBMIT_TIMEOUT_MS = 120000;
 const DEFAULT_NETWORK_RETRY_COUNT = 0;
 const DEFAULT_NETWORK_RETRY_DELAY_MS = 80;
@@ -72,6 +72,11 @@ export async function runApiBooking(config) {
       try {
         availability = await fetchAvailability(runtime);
       } catch (error) {
+        if (isFatalAvailabilityError(error)) {
+          lastReason = `Availability fatal error: ${error.message}`;
+          runtimeLog(runtime, lastReason);
+          throw error;
+        }
         lastReason = `Availability error: ${error.message}`;
         runtimeLog(runtime, `${lastReason}; quick rescan in ${runtime.networkRetryDelayMs}ms`);
         await sleepIfNeeded(attempt, runtime.maxAttempts, runtime.networkRetryDelayMs);
@@ -379,6 +384,10 @@ function createRuntime(config) {
 
   if (!wxkey) {
     throw new Error("bookingPageUrl is missing wxkey.");
+  }
+
+  if (!isBookingPageUrl(bookingUrl)) {
+    throw new Error("bookingPageUrl must be the booking page URL ending with /weixinordernewv7.aspx. Re-enter the booking page from WeChat, then paste the full URL with wxkey and lxbh.");
   }
 
   const bookingDate = toCompactDate(config.bookingWindow.date);
@@ -1242,6 +1251,21 @@ function describeAvailabilityFailure(result) {
   return rawMessage || `Unexpected availability response: ${JSON.stringify(result)}`;
 }
 
+function isFatalAvailabilityError(error) {
+  const message = String(error?.message ?? error);
+  return (
+    message.includes("Booking link expired") ||
+    message.includes("\u94fe\u63a5\u5df2\u7ecf\u8fc7\u671f") ||
+    message.includes("\u5e95\u90e8\u83dc\u5355") ||
+    message.includes("bookingPageUrl must be the booking page URL") ||
+    message.includes("bookingPageUrl is missing wxkey")
+  );
+}
+
+function isBookingPageUrl(bookingUrl) {
+  return /\/weixinordernewv7\.aspx$/i.test(bookingUrl.pathname);
+}
+
 function describeReservationConflict(conflicts) {
   if (!conflicts || conflicts.length === 0) {
     return "unknown shared resource conflict";
@@ -1422,5 +1446,7 @@ export const __test__ = {
   getBookingOrderId,
   getBookingOrderIds,
   getPreferredCourtOrder,
+  isBookingPageUrl,
+  isFatalAvailabilityError,
   selectBookingSlots
 };

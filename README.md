@@ -1,6 +1,6 @@
 # School Gym Booker
 
-Current stable version: `2.2.0`
+Current stable version: `2.2.1`
 
 This is a date-time-court driven booking script for mobile-first school gym pages.
 
@@ -22,6 +22,9 @@ You give it:
 - optional release time
 - optional blocked-price rules
 - fixed campus availability rules for class/team-training closures
+
+`bookingPageUrl` must be the real booking page URL ending with `weixinordernewv7.aspx`.
+Do not paste personal center, order notice, or other menu pages there.
 
 The script then:
 
@@ -277,7 +280,7 @@ Tunable fields live under `optimization`:
   "maxSubmitsPerScan": 2,
   "prefetchWhileSubmitting": true,
   "prefetchScanIntervalMs": 800,
-  "availabilityTimeoutMs": 4500,
+  "availabilityTimeoutMs": 20000,
   "submitTimeoutMs": 120000,
   "networkRetryCount": 0,
   "networkRetryDelayMs": 80,

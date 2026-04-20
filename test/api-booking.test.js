@@ -304,8 +304,29 @@ test("createRuntime keeps long submit timeout and zero submit retry by default",
     }
   }));
 
+  assert.equal(runtime.availabilityTimeoutMs, 20000);
   assert.equal(runtime.submitTimeoutMs, 120000);
   assert.equal(runtime.networkRetryCount, 0);
+});
+
+test("createRuntime rejects non-booking page URLs", () => {
+  assert.throws(
+    () => __test__.createRuntime(makeConfig({
+      bookingPageUrl: "http://example.com/accountmember.aspx?wxkey=test-key"
+    })),
+    /booking page URL/
+  );
+});
+
+test("fatal availability errors are not treated as normal retryable misses", () => {
+  assert.equal(
+    __test__.isFatalAvailabilityError(new Error("Booking link expired. Re-enter from the WeChat menu.")),
+    true
+  );
+  assert.equal(
+    __test__.isFatalAvailabilityError(new Error("Availability request timed out after 20000ms")),
+    false
+  );
 });
 
 test("allowSingleSlot accepts one slot when fallback is enabled", () => {
