@@ -658,6 +658,66 @@ test("campus rules handle restricted and normal monday segments independently", 
   assert.deepEqual(selected.map((slot) => slot.courtNo), [11, 10]);
 });
 
+test("campus rules keep tuesday 12-13 and 15-18 open as time windows, not court numbers", () => {
+  const runtime = __test__.createRuntime(makeConfig({
+    bookingWindow: {
+      date: "2026-04-21",
+      startTime: "12:00",
+      endTime: "16:00",
+      segments: [
+        { startTime: "12:00", endTime: "13:00" },
+        { startTime: "15:00", endTime: "16:00" }
+      ],
+      maxAttempts: 10
+    },
+    preferences: {
+      courtNumbers: [18, 19]
+    },
+    campusAvailabilityRules: {
+      enabled: true,
+      weekdays: {
+        tuesday: [
+          { time: "08:00-10:00", courts: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20] },
+          { time: "12:00-13:00", courts: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20] },
+          { time: "15:00-18:00", courts: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20] }
+        ]
+      }
+    }
+  }));
+  const availability = makeAvailability([
+    {
+      timemc: "12:00",
+      endtimemc: "13:00",
+      cdcount: "1",
+      cdbh1: "18",
+      c1: "i",
+      price1: "10"
+    },
+    {
+      timemc: "14:00",
+      endtimemc: "15:00",
+      cdcount: "1",
+      cdbh1: "18",
+      c1: "i",
+      price1: "10"
+    },
+    {
+      timemc: "15:00",
+      endtimemc: "16:00",
+      cdcount: "1",
+      cdbh1: "19",
+      c1: "i",
+      price1: "10"
+    }
+  ]);
+
+  const selected = __test__.selectBookingSlots(availability, runtime);
+
+  assert.equal(selected.length, 2);
+  assert.deepEqual(selected.map((slot) => slot.timeRange), ["12:00-13:00", "15:00-16:00"]);
+  assert.deepEqual(selected.map((slot) => slot.courtNo), [18, 19]);
+});
+
 test("describeBookingFailure keeps the first useful backend message", () => {
   assert.equal(
     __test__.describeBookingFailure([false, "您订场太累太辛苦了，坐下喝口水再来吧。", null]),
