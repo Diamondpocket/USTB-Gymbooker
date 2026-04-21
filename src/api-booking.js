@@ -161,17 +161,21 @@ export async function runApiBooking(config) {
         if (isSuccessfulBookingResult(result)) {
           const orderIds = getBookingOrderIds(result);
           const orderId = orderIds[0] ?? "unknown";
-          if (orderIds.length >= selectedSlots.length) {
+          const completeSuccess = orderIds.length >= selectedSlots.length;
+          if (completeSuccess) {
             await registry.markBooked(selectedSlots, runtime);
           } else {
             await registry.releaseSlots(selectedSlots, runtime);
           }
           reservedSlots = [];
-          runtimeLog(runtime, `BOOKING_SUCCESS orderIds=${orderIds.join(",") || "unknown"} orderCount=${orderIds.length}/${selectedSlots.length} slots=${signature}`);
-          if (orderIds.length > 0 && orderIds.length < selectedSlots.length) {
+          if (completeSuccess) {
+            runtimeLog(runtime, `BOOKING_SUCCESS orderIds=${orderIds.join(",") || "unknown"} orderCount=${orderIds.length}/${selectedSlots.length} slots=${signature}`);
+            runtimeLog(runtime, `Booking success for ${signature}, orderId=${orderId}`);
+          } else {
+            runtimeLog(runtime, `BOOKING_PARTIAL orderIds=${orderIds.join(",") || "unknown"} orderCount=${orderIds.length}/${selectedSlots.length} requestedSlots=${signature}`);
             runtimeLog(runtime, `BOOKING_PARTIAL_OR_UNMAPPED orderCount=${orderIds.length}/${selectedSlots.length}; released shared locks so other instances can rely on fresh scans.`);
+            runtimeLog(runtime, `Booking partial success: backend returned ${orderIds.length}/${selectedSlots.length} order id(s), firstOrderId=${orderId}, requestedSlots=${signature}`);
           }
-          runtimeLog(runtime, `Booking success for ${signature}, orderId=${orderId}`);
           return;
         }
 
@@ -1294,6 +1298,7 @@ function getBookingOrderIds(result) {
   return result
     .slice(1)
     .filter((item) => item !== undefined && item !== null && String(item).trim() !== "")
+    .flatMap((item) => String(item).split("|"))
     .map((item) => String(item).trim())
     .filter(looksLikeOrderId);
 }

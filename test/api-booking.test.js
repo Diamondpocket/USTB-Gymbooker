@@ -409,6 +409,10 @@ test("buildBookingPayload uses lxbh-prefixed cdstring format", () => {
 test("getBookingOrderId extracts the backend order id", () => {
   assert.equal(__test__.getBookingOrderId([true, "Y26040900134", null, null]), "Y26040900134");
   assert.equal(__test__.getBookingOrderId([true, null, "", undefined]), "unknown");
+  assert.deepEqual(__test__.getBookingOrderIds([true, "Y26041400030|Y26041400031", null, null]), [
+    "Y26041400030",
+    "Y26041400031"
+  ]);
   assert.deepEqual(__test__.getBookingOrderIds([true, "Y26041700016", "Y26041700017", null]), [
     "Y26041700016",
     "Y26041700017"

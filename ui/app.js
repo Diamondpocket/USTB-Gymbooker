@@ -499,7 +499,9 @@ function updateSuccessBanner(text) {
   }
 
   els.successBanner.hidden = false;
-  els.successBanner.textContent = `抢场成功！订单号: ${success.orderId}，场地: ${success.slots}`;
+  els.successBanner.textContent = success.kind === "partial"
+    ? `部分成功：后端只返回 ${success.orderCount} 个订单号。订单号: ${success.orderId}，请求场地: ${success.slots}`
+    : `抢场成功！订单号: ${success.orderId}，场地: ${success.slots}`;
 }
 
 function hideSuccessBanner() {
