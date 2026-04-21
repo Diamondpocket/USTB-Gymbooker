@@ -338,7 +338,7 @@ test("createRuntime keeps long submit timeout and zero submit retry by default",
     }
   }));
 
-  assert.equal(runtime.availabilityTimeoutMs, 20000);
+  assert.equal(runtime.availabilityTimeoutMs, 100000);
   assert.equal(runtime.submitTimeoutMs, 120000);
   assert.equal(runtime.networkRetryCount, 0);
 });

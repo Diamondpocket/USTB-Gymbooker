@@ -11,7 +11,7 @@
     "maxSubmitsPerScan": 2,
     "prefetchWhileSubmitting": true,
     "prefetchScanIntervalMs": 800,
-    "availabilityTimeoutMs": 20000,
+    "availabilityTimeoutMs": 100000,
     "submitTimeoutMs": 120000,
     "networkRetryCount": 0,
     "networkRetryDelayMs": 80,

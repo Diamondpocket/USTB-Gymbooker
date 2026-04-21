@@ -1,6 +1,6 @@
 # School Gym Booker
 
-Current stable version: `2.2.3`
+Current stable version: `2.2.4`
 
 This is a date-time-court driven booking script for mobile-first school gym pages.
 
@@ -280,7 +280,7 @@ Tunable fields live under `optimization`:
   "maxSubmitsPerScan": 2,
   "prefetchWhileSubmitting": true,
   "prefetchScanIntervalMs": 800,
-  "availabilityTimeoutMs": 20000,
+  "availabilityTimeoutMs": 100000,
   "submitTimeoutMs": 120000,
   "networkRetryCount": 0,
   "networkRetryDelayMs": 80,

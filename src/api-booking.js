@@ -5,7 +5,7 @@ const BOOKABLE_STATUS = "i";
 const TOTAL_COURTS = 20;
 const HOME_FUNCTION_ROUTE = "/HomefuntionV2json.aspx";
 const AVAILABILITY_ROUTE = "/GetForm.aspx?datatype=viewchangdi4weixinv&pagesize=0&pagenum=0";
-const DEFAULT_AVAILABILITY_TIMEOUT_MS = 20000;
+const DEFAULT_AVAILABILITY_TIMEOUT_MS = 100000;
 const DEFAULT_SUBMIT_TIMEOUT_MS = 120000;
 const DEFAULT_NETWORK_RETRY_COUNT = 0;
 const DEFAULT_NETWORK_RETRY_DELAY_MS = 80;
@@ -416,7 +416,7 @@ function createRuntime(config) {
     maxSubmitsPerScan: clampNumber(optimization.maxSubmitsPerScan, 1, 10, DEFAULT_MAX_SUBMITS_PER_SCAN),
     prefetchWhileSubmitting: optimization.prefetchWhileSubmitting ?? DEFAULT_PREFETCH_WHILE_SUBMITTING,
     prefetchScanIntervalMs: clampNumber(optimization.prefetchScanIntervalMs, 0, 10000, DEFAULT_PREFETCH_SCAN_INTERVAL_MS),
-    availabilityTimeoutMs: clampNumber(optimization.availabilityTimeoutMs, 500, 30000, DEFAULT_AVAILABILITY_TIMEOUT_MS),
+    availabilityTimeoutMs: clampNumber(optimization.availabilityTimeoutMs, 500, 180000, DEFAULT_AVAILABILITY_TIMEOUT_MS),
     submitTimeoutMs: clampNumber(optimization.submitTimeoutMs, 500, 180000, DEFAULT_SUBMIT_TIMEOUT_MS),
     networkRetryCount: clampNumber(optimization.networkRetryCount, 0, 5, DEFAULT_NETWORK_RETRY_COUNT),
     networkRetryDelayMs: clampNumber(optimization.networkRetryDelayMs, 0, 5000, DEFAULT_NETWORK_RETRY_DELAY_MS),
