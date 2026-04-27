@@ -1,9 +1,9 @@
 {
   "name": "school-gym-booker",
-  "version": "2.2.5",
+  "version": "2.2.6",
   "private": true,
   "type": "module",
-  "description": "Config-driven Playwright helper for booking school sports venues.",
+  "description": "北京科技大学体育馆订场系统本地抢场工具。",
   "scripts": {
     "capture-session": "node src/index.js capture-session",
     "book": "node src/index.js book",

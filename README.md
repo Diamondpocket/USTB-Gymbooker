@@ -1,10 +1,10 @@
-# School Gym Booker
+# 北京科技大学体育馆抢场工具
 
-Current stable version: `2.2.5`
+当前稳定版本：`2.2.6`
 
-This is a date-time-court driven booking script for mobile-first school gym pages.
+这是一个专门为北京科技大学体育馆订场系统编写的本地抢场工具，核心目标是绕开移动端网页卡顿、拖动困难、9 点放场时响应过慢这些问题。
 
-## Workspace Layout
+## 项目结构
 
 - `src/`: booking scripts and local UI server
 - `ui/`: browser control panel
@@ -14,7 +14,7 @@ This is a date-time-court driven booking script for mobile-first school gym page
 - `dist/`: generated launcher exe, ignored by Git
 - `research/`: local captured pages and analysis notes, ignored by Git
 
-You give it:
+你需要提供：
 
 - booking date
 - time range
@@ -26,7 +26,7 @@ You give it:
 `bookingPageUrl` must be the real booking page URL ending with `weixinordernewv7.aspx`.
 Do not paste personal center, order notice, or other menu pages there.
 
-The script then:
+程序会：
 
 1. opens the booking page in a mobile viewport
 2. waits until the release time if configured
@@ -35,17 +35,17 @@ The script then:
 5. builds several valid target combinations from each availability scan
 6. submits the best target first, then immediately switches to the next target if the backend says the first one failed
 
-There are now two modes:
+当前支持的模式：
 
 - `book`: mobile browser automation
 - `book-api`: direct HTTP submission using the same backend method the page calls
 - `scan-api`: fast availability polling for backup courts
 
-It uses your real login session and normal page actions. It does not bypass login, CAPTCHA, or server-side restrictions.
+它使用你的真实登录态和页面后端链路，不绕过登录、验证码或服务器限制。
 
-## Before Publishing
+## 发布前检查
 
-This repository is safe to publish only when local-only files stay ignored:
+这个仓库只有在本地敏感文件持续保持忽略状态时，才适合发布：
 
 - `config/local.json`
 - `config/multi-instance.json`
@@ -56,32 +56,32 @@ This repository is safe to publish only when local-only files stay ignored:
 - `dist/`
 - `GymBooker.exe`
 
-Never commit real `wxkey` values, session storage, booking logs, captured HTML, or generated executables. Use the `config/*.example.json` files as public templates and keep your real config files local.
+不要提交真实 `wxkey`、登录态文件、订场日志、抓取的 HTML 或生成出来的 exe。公开仓库里只保留 `config/*.example.json` 作为模板，真实配置始终放在本地。
 
-## Install
+## 安装
 
 ```powershell
 npm.cmd install
 npx.cmd playwright install chromium
 ```
 
-## First Login
+## 首次登录
 
-Copy the config and put your real booking URL in it:
+先复制配置模板，并填入你自己的订场链接：
 
 ```powershell
 Copy-Item config/example.json config/local.json
 ```
 
-Then save your login session:
+然后保存登录态：
 
 ```powershell
 npm.cmd run capture-session
 ```
 
-## Local UI
+## 本地控制台
 
-Start the local control panel:
+启动本地控制台：
 
 ```powershell
 npm.cmd run ui
@@ -93,25 +93,25 @@ Then open:
 http://localhost:3210
 ```
 
-The UI lets you:
+控制台可以：
 
-- edit booking date, time, and preferred courts
-- save `config/local.json`
-- run `scan-api`
-- run `book-api` dry-run
-- run real `book-api`
+- 修改订场日期、时段、场地偏好
+- 保存 `config/local.json`
+- 执行 `scan-api`
+- 执行 `book-api` dry-run
+- 执行真实 `book-api`
 
-## Multi-Account Coordination
+## 多账号协同
 
-Version `1.1.0` adds same-machine multi-account coordination. Each UI/API process can use its own config, instance name, port, wxkey, and session file, while sharing one local resource registry so automatic booking avoids courts already selected by another instance.
+从 `1.1.0` 开始支持同机多账号协同。每个 UI/API 进程都可以使用独立配置、实例名、端口、`wxkey` 和登录态文件，同时通过本地共享资源池避免不同账号抢到同一片场地。
 
-Example shared config:
+共享配置示例：
 
 ```powershell
 Copy-Item config/multi-instance.example.json config/multi-instance.json
 ```
 
-Then edit the `YOUR_WXKEY_*` values and start separate instances:
+然后填写 `YOUR_WXKEY_*`，分别启动不同实例：
 
 ```powershell
 node src/ui-server.js --config config/multi-instance.json --instance card_a --port 3210
@@ -119,13 +119,13 @@ node src/ui-server.js --config config/multi-instance.json --instance card_b --po
 node src/ui-server.js --config config/multi-instance.json --instance card_c --port 3212
 ```
 
-Direct CLI also supports the same flags:
+命令行同样支持这些参数：
 
 ```powershell
 node src/index.js book-api --config config/multi-instance.json --instance card_a --date 2026-04-16 --time 08:00-20:00 --dry-run
 ```
 
-Coordination behavior:
+协同行为：
 
 - `coordination.enabled=true` turns on the shared registry.
 - `coordination.statePath` stores selected/booked resources as JSON.
@@ -134,7 +134,7 @@ Coordination behavior:
 - Manual mode can restrict allowed courts with `preferences.courtNumbers`.
 - `manual_override.allow_manual_override=true` lets manual mode overwrite shared locks, and logs a conflict warning.
 
-Shared resource record shape:
+共享资源记录结构：
 
 ```json
 {
@@ -150,34 +150,34 @@ Shared resource record shape:
 }
 ```
 
-Log format:
+日志格式：
 
 ```text
 [2026/4/13 11:30:00][card-a] Locked 2 resource(s) in shared registry.
 [2026/4/13 11:30:00][card-b] Coordination skipped 2 resource(s) selected by other instance(s).
 ```
 
-## Windows EXE Launcher
+## Windows EXE 启动器
 
-Build the simple Windows launcher:
+构建简易 Windows 启动器：
 
 ```powershell
 npm.cmd run build-exe
 ```
 
-This generates:
+会生成：
 
 ```text
 dist/GymBooker.exe
 ```
 
-Usage:
+使用方式：
 
 1. Keep the whole project folder structure intact
 2. Double-click `dist/GymBooker.exe`
 3. It starts the local UI server and opens `http://localhost:3210`
 
-Multi-instance launcher examples:
+多实例启动示例：
 
 ```powershell
 dist\GymBooker.exe --config config\multi-instance.json --instance card_a --port 3210
@@ -185,33 +185,33 @@ dist\GymBooker.exe --config config\multi-instance.json --instance card_b --port 
 dist\GymBooker.exe --config config\multi-instance.json --instance card_c --port 3212
 ```
 
-The generated convenience launcher names `GymBooker-card-a.exe`, `GymBooker-card-b.exe`, and `GymBooker-card-c.exe` automatically map to ports `3210`, `3211`, and `3212`.
+生成的 `GymBooker-card-a.exe`、`GymBooker-card-b.exe`、`GymBooker-card-c.exe` 会自动对应 `3210`、`3211`、`3212` 端口。
 
-Notes:
+说明：
 
-- This is the simple launcher version, not a single-file full bundle
-- `config/`, `.auth/`, `src/`, `ui/`, and `node_modules/` still need to stay with the project
-- For testing without opening a browser:
+- 这是简易启动器，不是单文件完全打包版
+- `config/`、`.auth/`、`src/`、`ui/`、`node_modules/` 仍然要和项目放在一起
+- 如果只想测试，不自动打开浏览器：
 
 ```powershell
 dist\GymBooker.exe --no-browser
 ```
 
-## Run With Direct Parameters
+## 直接带参数运行
 
-Example:
+示例：
 
 ```powershell
 npm.cmd run book -- --date 2026-04-12 --time 19:00-20:00 --courts 6,7,8 --release-at "2026-04-09 08:59:58"
 ```
 
-Direct API dry run:
+直接 API 干跑：
 
 ```powershell
 npm.cmd run book-api -- --date 2026-04-12 --time 19:00-20:00 --courts 6,7,8 --dry-run
 ```
 
-Fast fallback scan:
+快速扫描候补：
 
 ```powershell
 npm.cmd run scan-api -- --date 2026-04-12 --time 19:00-20:00 --courts 6,7,8 --scan-loops 20 --scan-interval-ms 500

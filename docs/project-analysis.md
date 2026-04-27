@@ -1,27 +1,27 @@
-# School Gym Booker 项目源码分析 Project Source Analysis
+# 北京科技大学体育馆抢场工具源码分析
 
-> 版本 Version: `2.2.5`  
-> 目标 Goal: 帮助初学者真正读懂 `School Gym Booker` 的工作流 workflow、原理 principle、架构 architecture and components。
+> 版本：`2.2.6`  
+> 目标：帮助初学者真正读懂这个项目的工作流、原理和架构。
 
-## 目录 Table of Contents
+## 目录
 
-1. [项目总览 Project Overview](#1-项目总览-project-overview)
-2. [项目整体结构 Overall Structure](#2-项目整体结构-overall-structure)
-3. [核心模块构成 Core Components](#3-核心模块构成-core-components)
-4. [完整工作流 End to End Workflow](#4-完整工作流-end-to-end-workflow)
-5. [核心原理 Working Principle](#5-核心原理-working-principle)
-6. [关键文件精讲 Key Files Explained](#6-关键文件精讲-key-files-explained)
-7. [关键函数和调用链 Key Functions and Call Chain](#7-关键函数和调用链-key-functions-and-call-chain)
-8. [数据流和控制流 Data Flow and Control Flow](#8-数据流和控制流-data-flow-and-control-flow)
-9. [依赖与外部组件 Dependencies and External Interfaces](#9-依赖与外部组件-dependencies-and-external-interfaces)
-10. [启动方式与运行条件 Startup and Runtime Requirements](#10-启动方式与运行条件-startup-and-runtime-requirements)
-11. [最小可理解路径 Minimum Learning Path](#11-最小可理解路径-minimum-learning-path)
-12. [名词对照 Glossary](#12-名词对照-glossary)
-13. [初学者复习精简版 Beginner Review](#13-初学者复习精简版-beginner-review)
+1. [项目总览](#1-项目总览-project-overview)
+2. [项目整体结构](#2-项目整体结构-overall-structure)
+3. [核心模块构成](#3-核心模块构成-core-components)
+4. [完整工作流](#4-完整工作流-end-to-end-workflow)
+5. [核心原理](#5-核心原理-working-principle)
+6. [关键文件精讲](#6-关键文件精讲-key-files-explained)
+7. [关键函数和调用链](#7-关键函数和调用链-key-functions-and-call-chain)
+8. [数据流和控制流](#8-数据流和控制流-data-flow-and-control-flow)
+9. [依赖与外部组件](#9-依赖与外部组件-dependencies-and-external-interfaces)
+10. [启动方式与运行条件](#10-启动方式与运行条件-startup-and-runtime-requirements)
+11. [最小可理解路径](#11-最小可理解路径-minimum-learning-path)
+12. [名词对照](#12-名词对照-glossary)
+13. [初学者复习精简版](#13-初学者复习精简版-beginner-review)
 
-## 1 项目总览 Project Overview
+## 1 项目总览
 
-`School Gym Booker` / `school-gym-booker` 是一个给学校体育馆移动端订场系统用的本地自动化工具。
+这个项目是一个专门给北京科技大学体育馆移动端订场系统用的本地自动化工具。
 
 它解决的问题是：原网页 UI 卡、微信公众号页面难拖动、9 点放场时手动操作太慢，所以项目把“看场地、选时段、筛价格、过滤校内不可用时段、提交订单、多账号协同”做成本地脚本和本地 UI。
 
